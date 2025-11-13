@@ -1,9 +1,7 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
 
 export const signupController = async (req: Request, res: Response) => {
   try {
@@ -12,16 +10,18 @@ export const signupController = async (req: Request, res: Response) => {
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields are required" });
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already registered" });
+    // const existingUser = await prisma.user.findUnique({ where: { email } });
+    // if (existingUser)
+    //   return res.status(400).json({ message: "Email already registered" });
 
-    const hashPassword = await bcrypt.hash(password, 10);
+    // const hashPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: { name, email, password: hashPassword },
-    });
-
+    // const user = await prisma.user.create({
+    //   data: { name, email, password: hashPassword },
+    // });
+    let user={
+        id:1234
+    }
     const token = jwt.sign({ id: user.id }, "sanjana", { expiresIn: "1d" });
 
     // Set cookie
@@ -34,7 +34,7 @@ export const signupController = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       message: "Account created successfully",
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id },
     });
   } catch (err) {
     console.error(err);
@@ -49,13 +49,15 @@ export const signinController = async (req: Request, res: Response) => {
     if (!email || !password)
       return res.status(400).json({ message: "Email and password are required" });
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    // const user = await prisma.user.findUnique({ where: { email } });
+    // if (!user) return res.status(404).json({ message: "User not found" });
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword)
-      return res.status(401).json({ message: "Invalid credentials" });
-
+    // const validPassword = await bcrypt.compare(password, user.password);
+    // if (!validPassword)
+    //   return res.status(401).json({ message: "Invalid credentials" });
+     let user={
+        id:1234
+    }
     const token = jwt.sign({ id: user.id }, "sanjana", { expiresIn: "1d" });
 
     // Set cookie
@@ -68,7 +70,7 @@ export const signinController = async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: "Login successful",
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id },
     });
   } catch (err) {
     console.error(err);
