@@ -1,10 +1,20 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "@repo/backend-common/config";
+import {signinSchema, signupSchema} from "@repo/common/zodTypes"
 
 
 export const signupController = async (req: Request, res: Response) => {
   try {
+
+    const data= signupSchema.safeParse(req.body)
+    if(!data.success){
+        res.json({
+            message:"unsucessfull"
+        })
+        return;
+    }
     const { name, email, password } = req.body;
 
     if (!name || !email || !password)
@@ -22,7 +32,7 @@ export const signupController = async (req: Request, res: Response) => {
     let user={
         id:1234
     }
-    const token = jwt.sign({ id: user.id }, "sanjana", { expiresIn: "1d" });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1d" });
 
     // Set cookie
     res.cookie("token", token, {
@@ -58,7 +68,7 @@ export const signinController = async (req: Request, res: Response) => {
      let user={
         id:1234
     }
-    const token = jwt.sign({ id: user.id }, "sanjana", { expiresIn: "1d" });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1d" });
 
     // Set cookie
     res.cookie("token", token, {
