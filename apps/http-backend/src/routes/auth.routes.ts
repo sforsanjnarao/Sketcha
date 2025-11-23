@@ -7,6 +7,7 @@ const router: ExpressRouter =Router()
 
 router.post('/signup',signupController)
 router.post('/signin',signinController)
+//reset-password route
 router.get("/me", middleware, async (req, res) => {
   res.json({ message: "You are authenticated", userId: (req as any).userId });
 });
