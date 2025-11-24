@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    "./prismaClient": "./src/index.ts"
+    "./prismaClient": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    }
   },
   "scripts": {
     "build": "tsc -b",
