@@ -2,25 +2,25 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "exports": {
     "./prismaClient": "./src/index.ts"
   },
-  "imports": {
-    "#db/*": "./dist/*"
-  },
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   },
-
-  "exclude":[
+  "exclude": [
     "node_module",
     "dist"
   ],
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.19.1",
-    "prisma": "^7.0.0"
+    "prisma": "^7.0.0",
+    "tsx": "^4.20.6"
   },
   "keywords": [],
   "author": "",
