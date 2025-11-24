@@ -1,0 +1,2 @@
+export declare const prismaClient: import("./generated/internal/class.js").PrismaClient<never, import("./generated/internal/prismaNamespace.js").GlobalOmitConfig | undefined, runtime.Types.Extensions.DefaultArgs>;
+//# sourceMappingURL=index.d.ts.map
