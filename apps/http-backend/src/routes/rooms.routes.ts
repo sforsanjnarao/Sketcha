@@ -6,7 +6,23 @@ import { prismaClient } from "@repo/db/prismaClient";
 
 const router: ExpressRouter =Router()
 
+
+
+
 router.post('/create-room',middleware, rooms)
+
+router.get("/room/:slug",middleware, async (req,res)=>{
+    const {slug}=req.params
+    const room = await prismaClient.room.findFirst({
+        where:{
+            slug:slug
+        }
+    })
+    return res.json({
+        room
+    })
+})
+
 router.get("/chats/:roomId",middleware, async (req,res)=>{
     const {roomId}=req.params
     const roomID=Number(roomId)
@@ -23,17 +39,7 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
         message
     })
 })
-router.get("/chats/:slug",middleware, async (req,res)=>{
-    const {slug}=req.params
-    const room = await prismaClient.room.findFirst({
-        where:{
-            slug:slug
-        }
-    })
-    return res.json({
-        room
-    })
-})
+
 
 
 export default router
