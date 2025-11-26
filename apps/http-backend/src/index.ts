@@ -4,8 +4,13 @@ import auth from './routes/auth.routes'
 import room from './routes/rooms.routes'
 import cookieParser from 'cookie-parser'
 import dotenv from "dotenv";
+import cors from 'cors'
 dotenv.config({ path: "../../packages/db/.env" });
 
+
+app.use(cors({origin:'http://localhost:3000',
+    credentials:true
+}))
 app.use(express.json())
 app.use(cookieParser())
 

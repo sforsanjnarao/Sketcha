@@ -1,52 +1,46 @@
 @import 'tailwindcss';
+@plugin '../hero.ts';
+/* Note: You may need to change the path to fit your project structure */
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+@custom-variant dark (&:is(.dark *));
+
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --pink: #FFD6E8;
+    --blue: #D6EFFF;
+    --yellow: #FFECC7;
+    --mint: #C6FFD9;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+.bg-pastel {
+    background-image: linear-gradient(135deg, var(--pink), var(--blue), var(--yellow));
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+
+/* small utility for dashed hand-drawn style */
+.border-dashed {
+    border-style: dashed;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+
+/* subtle animation for blobs */
+@keyframes floaty {
+    0% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-12px)
+    }
+
+    100% {
+        transform: translateY(0)
+    }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
-  }
+.blob-anim {
+    animation: floaty 6s ease-in-out infinite;
 }

@@ -6,8 +6,12 @@
   ],
   "cSpell.words": [
     "autoincrement",
+    "Collab",
     "dotenv",
+    "Excalidraw",
+    "heroui",
     "jsonwebtoken",
     "Sketcha"
-  ]
+  ],
+  "css.lint.unknownAtRules": "ignore"
 }

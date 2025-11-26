@@ -1,3 +1,4 @@
+/**@type {import('postcss-load-config').Config}*/
 import { postcssConfig } from '@repo/tailwind-config/postcss';
  
 export default postcssConfig;
