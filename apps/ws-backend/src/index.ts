@@ -76,7 +76,7 @@ wss.on('connection',async (ws, request)=>{
        
 
              //data is what client send as an object
-        const parsedData=await JSON.parse(raw) //{type:"join_room", roomId:1}
+        const parsedData= JSON.parse(raw) //{type:"join_room", roomId:1}
         //{
         //  type:enum[join_room, leave_room, chat]
         //  roomId:

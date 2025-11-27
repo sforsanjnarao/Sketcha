@@ -20,9 +20,13 @@ const ChatRoomClient = ({message, id}:{
             }))
             console.log('sent by server')
          socket.onmessage=(event)=>{
+            console.log('ONMESSAGE BROWSER DATA:', event)
             const parsedData=JSON.parse(event.data)
             if(parsedData.type==='chat'){
-                setChats(c=>[...c,parsedData.message])
+                console.log('IS IT CHAT:',parsedData.type)
+                
+                setChats(c=>[...c,{message:parsedData.message}])
+                console.log(chats)
             }
          }
          console.log('should run ')
