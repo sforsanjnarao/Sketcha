@@ -7,27 +7,29 @@ import type { WebSocket } from "ws";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import {prismaClient} from "@repo/db/prismaClient"
 
-const wss= new WebSocketServer({port:8080,
-    verifyClient:(info,done)=>{
-        const authHeader= info.req.headers["authorization"]
-        if(!authHeader){
-            return done(false, 401,'token missing')
-        }
-        const token= authHeader.split(" ")[1] 
-        if(!token) return done(false, 401, ' token not available')
+const wss= new WebSocketServer({port:8080})
 
-        try {
-            const decoded= jwt.verify(token,JWT_SECRET) as {userId:string}
-            console.log('Decode:',decoded)
-            console.log(decoded.userId)
-            info.req.userId=decoded.userId
-            console.log(info.req.userId)
-            done(true)
-        } catch (error) {
-            done(false, 401, 'Invalid token')
-        }
+function authUser(token: string) {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log('DECODED',decoded)
+    if (typeof decoded == "string") {
+      console.error("Decoded token is a string, expected object");
+      return null;
     }
-})
+    if (!decoded.userId) {
+      console.error("No valid user ID in token");
+      return null;
+    }
+    console.log('DECODED 2',decoded.userId)
+
+    return decoded.userId;
+  } catch (err) {
+    console.error("JWT verification failed:", err);
+    return null;
+  }
+}
+
 interface User{
     userId:string,
     ws:WebSocket,
@@ -36,9 +38,31 @@ interface User{
 const users:User[]=[]
 
 wss.on('connection',async (ws, request)=>{
+      const url = request.url;
+      console.log('URL',request.url)
+        if (!url) {
+            console.error("No valid URL found in request");
+            return;
+        }
+        const parsedUrl = new URL(request.url!, "http://localhost");
+        const token = parsedUrl.searchParams.get("token");
+        console.log('TOKEN:', token)
+        if (!token || token === null) {
+            console.error("No valid token found in query params");
+            ws.close(1008, "User not authenticated");
+            return;
+        }
+        const userId = authUser(token);
+        console.log('USERID AFTER TOKEN:',userId)
+        if (!userId) {
+            console.error("Connection rejected: invalid user");
+            ws.close(1008, "User not authenticated");
+            return;
+        }
+
              console.log('connected 01')
         users.push({
-            userId:request.userId as string,
+            userId,
             ws,
             rooms:[]
         })
@@ -83,7 +107,7 @@ wss.on('connection',async (ws, request)=>{
                 data:{
                     message,
                     user:{
-                        connect:{id: request.userId as string}
+                        connect:{id:userId}
                     },
                     room:{
                         connect:{id: roomId}
@@ -95,6 +119,9 @@ wss.on('connection',async (ws, request)=>{
             //not inside any room id
             users.forEach(user=>{
                 if(user.rooms.includes(roomId)){
+                    console.log('user.room: ',user.rooms)
+                    console.log('user.rooms.includes(roomId): ',user.rooms.includes(roomId))
+
                     user.ws.send(JSON.stringify({
                         type:'chat',
                         message:message,

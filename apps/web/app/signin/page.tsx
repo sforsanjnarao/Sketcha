@@ -29,7 +29,7 @@ export default function SigninPage() {
       const res = await signin({ email, password });
 
       localStorage.setItem('sketcha_token', res.token);
-      router.push('/dashboard');
+      router.push('/room');
     } catch (e: any) {
       setError(e.message);
     }

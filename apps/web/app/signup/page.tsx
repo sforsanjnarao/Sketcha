@@ -33,7 +33,7 @@ export default function SignupPage() {
       const res = await signup({ name, email, password });
 
       localStorage.setItem('sketcha_token', res.token);
-      router.push('/dashboard');
+      router.push('/room');
     } catch (e: any) {
       setError(e.message);
     }

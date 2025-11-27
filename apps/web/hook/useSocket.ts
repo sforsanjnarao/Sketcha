@@ -8,10 +8,19 @@ import { WS_URL } from "../config";
 
 
     useEffect(()=>{
-        const ws= new WebSocket(WS_URL)
+        try{
+        const token = localStorage.getItem("sketcha_token");
+
+        const ws= new WebSocket(`${WS_URL}?token=${token}`)
+        console.log('ws:',ws)
         ws.onopen=()=>{
             setLoading(false)
             setSocket(ws)
+            console.log('websocket is on')
+        }}catch(error){
+            
+            console.error("Failed to initialize WebSocket:", error)
+            setLoading(false)
         }
     },[])
 
