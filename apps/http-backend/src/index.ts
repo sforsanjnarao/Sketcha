@@ -5,6 +5,8 @@ import room from './routes/rooms.routes'
 import cookieParser from 'cookie-parser'
 import dotenv from "dotenv";
 import cors from 'cors'
+
+
 dotenv.config({ path: "../../packages/db/.env" });
 
 
@@ -14,7 +16,6 @@ app.use(cors({origin:'http://localhost:3000',
 app.use(express.json())
 app.use(cookieParser())
 
-console.log("DB URL =>", process.env.DATABASE_URL);
 app.use('/api/auth',auth)
 app.use('/api',room)
 app.listen(4000,()=>{

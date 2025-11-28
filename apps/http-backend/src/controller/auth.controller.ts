@@ -36,6 +36,12 @@ export const signupController = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: "1d",
     });
+    res.cookie('sketcha_token',token,{
+      httpOnly:true,
+      secure:false,
+      sameSite: "lax",
+      path: "/",      
+    })
     return res.status(201).json({
       message: "Account created successfully",
       token,
@@ -74,6 +80,13 @@ export const signinController = async (req: Request, res: Response) => {
       expiresIn: "1d",
     });
 
+    res.cookie('sketcha_token',token,{
+      httpOnly:true,
+      secure:false,
+      sameSite: "lax", 
+      path: "/",     
+    })
+    console.log('COOKIE', res.cookie)
     return res.status(200).json({
       message: "Login successful",
       token,

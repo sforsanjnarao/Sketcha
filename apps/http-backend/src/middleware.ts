@@ -6,12 +6,12 @@ import jwt from "jsonwebtoken";
 
 
 export const middleware = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const authHeader = req.headers["authorization"];
-    if (!authHeader)
-      return res.status(401).json({ message: "Token missing" });
 
-    const token = authHeader.split(" ")[1]; 
+  
+  try {
+    
+    const token=req.cookies.sketcha_token
+    console.log(token)
     if (!token)
       return res.status(401).json({ message: "Invalid token format" });
 

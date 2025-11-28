@@ -15,6 +15,7 @@ export const rooms=async (req:Request, res:Response)=>{
   }
 
   const {slug}=parsed.data
+  console.log("slug:", slug)
   try{
     const room:roomData= await prismaClient.room.create({
       data:{
@@ -23,7 +24,7 @@ export const rooms=async (req:Request, res:Response)=>{
         
       }
     })
-    res.status(200).json({message:"room created", roomId: room.id})
+    res.status(200).json({message:"room created",slug:room.slug ,roomId: room.id})
   }catch(err){
     res.status(400).json({"Error":err, message:"room creation failed"})
   }

@@ -11,6 +11,8 @@ const router: ExpressRouter =Router()
 
 router.post('/create-room',middleware, rooms)
 
+
+//get room by chat id
 router.get("/chats/:roomId",middleware, async (req,res)=>{
     try{
         const {roomId}=req.params
@@ -32,8 +34,31 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
     }
 })
 
+
+//get all rooms
+router.get('/room',middleware, async (req,res)=>{
+    try{
+    const allRooms= await prismaClient.room.findMany({
+        select:{
+            id: true,
+            slug:true,
+            createdAt:true
+        }
+    })
+
+    res.status(200).json({
+        success:true,
+        allRooms
+    })
+    } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+})
+
+//get room by name
 router.get("/room/:slug",middleware, async (req,res)=>{
     try{
+        console.log('i got hit by the backend')
         const {slug}=req.params
         const room = await prismaClient.room.findFirst({
             where:{
@@ -44,12 +69,14 @@ router.get("/room/:slug",middleware, async (req,res)=>{
 
         return res.status(200).json({
             room:room,
-            message:'lala'
         })
     }catch(err){
         return res.status(401).json({message: `ERROR:${err}`})
     }
 })
+
+
+
 
 
 

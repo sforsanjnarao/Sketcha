@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 import { WS_URL } from "../config";
 
 //add token here too
- export function useSocket(){
+ export  function useSocket(){
     const [loading, setLoading]= useState(true)
     const [socket, setSocket]= useState<WebSocket>()
 
 
     useEffect(()=>{
         try{
-        const token = localStorage.getItem("sketcha_token");
-
-        const ws= new WebSocket(`${WS_URL}?token=${token}`)
+        const ws= new WebSocket(WS_URL)
         console.log('ws:',ws)
         ws.onopen=()=>{
             setLoading(false)

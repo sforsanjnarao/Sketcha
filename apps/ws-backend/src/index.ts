@@ -6,6 +6,8 @@ import type { WebSocket } from "ws";
 
 import { JWT_SECRET } from "@repo/backend-common/config";
 import {prismaClient} from "@repo/db/prismaClient"
+import cookie from "cookie";
+
 
 const wss= new WebSocketServer({port:8080})
 
@@ -38,14 +40,25 @@ interface User{
 const users:User[]=[]
 
 wss.on('connection',async (ws, request)=>{
-      const url = request.url;
-      console.log('URL',request.url)
-        if (!url) {
-            console.error("No valid URL found in request");
-            return;
-        }
-        const parsedUrl = new URL(request.url!, "http://localhost");
-        const token = parsedUrl.searchParams.get("token");
+    //   const url = request.url;
+    //   console.log('URL',request.url)
+    //     if (!url) {
+    //         console.error("No valid URL found in request");
+    //         return;
+    //     }
+    //     const parsedUrl = new URL(request.url!, "http://localhost");
+    //     const token = parsedUrl.searchParams.get("token");
+    const cookieHeader= request.headers.cookie
+    if(cookieHeader==undefined){
+        console.log('headers cookie from request is undefined')
+        console.log('headers cookie from request is undefined')
+        console.log('headers cookie from request is undefined')
+
+    }
+    const cookieParser= cookie.parse(cookieHeader as string)
+
+    const token=cookieParser.sketcha_token
+
         console.log('TOKEN:', token)
         if (!token || token === null) {
             console.error("No valid token found in query params");
