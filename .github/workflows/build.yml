@@ -45,4 +45,4 @@ jobs:
         env:
           # Dummy URL to satisfy Prisma validation.
           # Since we are using Neon, we don't want to connect to Prod during CI.
-          DATABASE_URL: "postgresql://postgres:password@localhost:5432/mydb"
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
