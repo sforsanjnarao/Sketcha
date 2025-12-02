@@ -36,7 +36,7 @@ const ChatRoomClient = ({message, id}:{
             <CollaborativeBoard socket={socket} roomId={id} />
 
         </div>
-         {/* <div>
+         <div>
             {chats.map((m,index)=> <div key={index}>{m.message}</div>)}
 
 
@@ -50,7 +50,7 @@ const ChatRoomClient = ({message, id}:{
                 setCurrentMessage('')
             }
             }>send message</button>
-        </div> */}
+        </div>
    </div>
   )
 }

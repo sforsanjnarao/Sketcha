@@ -1,15 +1,43 @@
 import {json, Router } from "express";
 import type {Router as ExpressRouter } from "express";
 import { middleware } from "../middleware";
-import { rooms } from "../controller/rooms.controller";
 import { prismaClient } from "@repo/db/prismaClient";
+import { createRoom } from "@repo/common/zodTypes";
+import { Request, Response } from "express";
 
 const router: ExpressRouter =Router()
 
+interface roomData{
+  id:number
+  slug:string,
+  adminId:string
+}
 
 
+router.post('/create-room',middleware, 
+    async (req:Request, res:Response)=>{
+  const parsed= createRoom.safeParse(req.body)
+  if(!parsed.success){
+    return res.status(400).json({message:"Validation failed" })
+  }
 
-router.post('/create-room',middleware, rooms)
+  const {slug}=parsed.data
+  console.log("slug:", slug)
+  try{
+    const room:roomData= await prismaClient.room.create({
+      data:{
+        slug:slug,
+        adminId:req.userId as string
+        
+      }
+    })
+    res.status(200).json({message:"room created",slug:room.slug ,roomId: room.id})
+  }catch(err){
+    res.status(400).json({"Error":err, message:"room creation failed"})
+  }
+  
+}
+)
 
 
 //get room by chat id
@@ -39,6 +67,9 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
 router.get('/room',middleware, async (req,res)=>{
     try{
     const allRooms= await prismaClient.room.findMany({
+        where:{
+            adminId: req.userId
+        },
         select:{
             id: true,
             slug:true,

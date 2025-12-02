@@ -31,8 +31,8 @@ export default function HomePage() {
             A playful infinite canvas built for messy creativity.
           </p>
 
-          {/* Buttons */}
           <div className="flex gap-4 mb-10">
+            {/* if authinticated set it strate to the dashboard */}
             <Button
               radius="lg"
               as={Link}

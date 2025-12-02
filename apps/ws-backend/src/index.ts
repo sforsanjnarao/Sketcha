@@ -35,7 +35,7 @@ function authUser(token: string) {
 interface User{
     userId:string,
     ws:WebSocket,
-    rooms:string[]
+    rooms:Number[]
 }
 const users:User[]=[]
 
@@ -95,7 +95,6 @@ wss.on('connection',async (ws, request)=>{
         //  roomId:
         //  message:
         //} 
-        console.log("after parsed",parsedData)
         
         if(parsedData.type=="join_room"){
             const user=users.find(x=>x.ws==ws)
@@ -111,9 +110,8 @@ wss.on('connection',async (ws, request)=>{
         }
 
         if(parsedData.type==="chat"){
-            const roomId=parsedData.roomId
+            const roomId=Number(parsedData.roomId)
             const message= parsedData.message
-            console.log(`CHAT: {roomID: ${roomId}, message:${message}}`)
 
             //TODO: push it to the queue
             const createChat=await prismaClient.chat.create({
@@ -127,14 +125,9 @@ wss.on('connection',async (ws, request)=>{
                     },
                 }
             })
-            console.log(createChat)
-            console.log('All Users:', users)
             //not inside any room id
             users.forEach(user=>{
                 if(user.rooms.includes(roomId)){
-                    console.log('user.room: ',user.rooms)
-                    console.log('user.rooms.includes(roomId): ',user.rooms.includes(roomId))
-
                     user.ws.send(JSON.stringify({
                         type:'chat',
                         message:message,
@@ -143,6 +136,23 @@ wss.on('connection',async (ws, request)=>{
                 }
             })
         }
+
+
+        if (parsedData.type === "canvas-update") {
+        const roomId = Number(parsedData.roomId)
+        const data = parsedData.data;
+
+        // Broadcast to everyone in the room EXCEPT the sender
+        users.forEach(user => {
+            // Check if user is in the room AND is not the current sender
+            if (user.rooms.includes(roomId) && user.ws !== ws) {
+                user.ws.send(JSON.stringify({
+                    type: 'canvas-update',
+                    data: data
+                }));
+            }
+        });
+    }
         }catch(err){
                 console.error("WebSocket error:", err);
                 ws.send(JSON.stringify({

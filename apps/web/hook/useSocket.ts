@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { WS_URL } from "../config";
-
-//add token here too
+//this just opening a websocket connect and returning ws object and loading if it set up or not
  export  function useSocket(){
     const [loading, setLoading]= useState(true)
     const [socket, setSocket]= useState<WebSocket>()
@@ -10,13 +9,10 @@ import { WS_URL } from "../config";
     useEffect(()=>{
         try{
         const ws= new WebSocket(WS_URL)
-        console.log('ws:',ws)
         ws.onopen=()=>{
             setLoading(false)
-            setSocket(ws)
-            console.log('websocket is on')
+            setSocket(ws)  //saving the connection object
         }}catch(error){
-            
             console.error("Failed to initialize WebSocket:", error)
             setLoading(false)
         }

@@ -9,13 +9,12 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio"
   },
-  
   "exclude": [
     "node_module",
     "dist"
@@ -33,6 +32,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
+    "@prisma/client-runtime-utils": "^7.0.0",
     "dotenv": "^17.2.3"
   }
 }
