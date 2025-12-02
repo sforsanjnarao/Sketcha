@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Input, Button, Card, CardBody } from '@heroui/react';
+import { Input, Card, CardBody } from '@heroui/react';
 import { signup } from '../../lib/api';
 import Doodles from '../../components/Doodles';
 import WobbleButton from '../../components/WobbleButton'
@@ -30,12 +30,13 @@ export default function SignupPage() {
       const email = form.get('email') as string;
       const password = form.get('password') as string;
 
-      const res = await signup({ name, email, password });
+      await signup({ name, email, password });
 
       // localStorage.setItem('sketcha_token', res.token);
       router.push('/dashboard');
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const err= e as Error
+      setError(err.message );
     }
 
     setLoading(false);

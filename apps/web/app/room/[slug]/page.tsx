@@ -27,7 +27,7 @@ try{
 
     return response.data.room.id
     }catch(err){
-        console.error('get route find with slug')
+        console.error(err,'get route find with slug')
     }
 }
 

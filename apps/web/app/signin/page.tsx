@@ -25,13 +25,14 @@ export default function SigninPage() {
     try {
       const email = form.get('email') as string;
       const password = form.get('password') as string;
-
-      const res = await signin({ email, password });
+      
+      await signin({ email, password });
 
       // localStorage.setItem('sketcha_token', res.token);
       router.push('/dashboard');
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const err= e as Error
+      setError(err.message );
     }
 
     setLoading(false);

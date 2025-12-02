@@ -10,7 +10,7 @@ const ChatRoomClient = ({message, id}:{
 
     const [chats, setChats]=useState(message)
     const {socket, loading}=useSocket()
-    const [currentMessage, setCurrentMessage]=useState('')
+    // const [currentMessage, setCurrentMessage]=useState('')
 
     useEffect(()=>{
         if(socket && !loading){

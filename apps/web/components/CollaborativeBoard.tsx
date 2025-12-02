@@ -1,5 +1,11 @@
 'use client'
-import { Tldraw, Editor, HistoryEntry } from 'tldraw'
+import { 
+  Tldraw, 
+  Editor, 
+  HistoryEntry, 
+  TLRecord, 
+  RecordsDiff 
+} from 'tldraw'
 import 'tldraw/tldraw.css'
 import { useEffect, useState } from 'react'
 
@@ -12,21 +18,17 @@ export default function CollaborativeBoard({
 }) {
   const [editor, setEditor] = useState<Editor>()
 
-  // 1. Handle Mounting the Editor
   const handleMount = (editorInstance: Editor) => {
     setEditor(editorInstance)
     
-    // LISTEN TO LOCAL CHANGES (What YOU draw)
+    // Type the entry explicitly, though TS often infers this automatically
     editorInstance.store.listen(
-        (entry: HistoryEntry<any>) => {
-            // Only handle changes initiated by the user
+        (entry: HistoryEntry<TLRecord>) => {
             if (entry.source !== 'user') return
 
             const { changes } = entry
             
-            // If the socket is open, send the diff
             if (socket?.readyState === WebSocket.OPEN) {
-                // We optimize by checking if there are actual changes
                 if (
                     Object.keys(changes.added).length || 
                     Object.keys(changes.updated).length || 
@@ -34,17 +36,16 @@ export default function CollaborativeBoard({
                 ) {
                     socket.send(JSON.stringify({
                         type: 'canvas-update',
-                        roomId:  Number(roomId),
-                        data: changes // Send only the diff
+                        roomId: Number(roomId),
+                        data: changes 
                     }))
                 }
             }
         },
-        { source: 'user', scope: 'document' } // Options
+        { source: 'user', scope: 'document' }
     )
   }
 
-  // 2. LISTEN TO SOCKET (What OTHERS draw)
   useEffect(() => {
     if (!socket || !editor) return
 
@@ -52,26 +53,29 @@ export default function CollaborativeBoard({
       try {
         const msg = JSON.parse(event.data)
 
-        // Only handle canvas updates
         if (msg.type === 'canvas-update') {
-            // mergeRemoteChanges applies the update without triggering the 'user' listener above
+            const changes = msg.data as RecordsDiff<TLRecord>
+
             editor.store.mergeRemoteChanges(() => {
-                const { added, updated, removed } = msg.data
+                const { added, updated, removed } = changes
                 
-                // Tldraw internals to apply diffs
                 if (added) {
                     for (const record of Object.values(added)) {
-                        editor.store.put([record as any])
+                        editor.store.put([record])
                     }
                 }
+                
                 if (updated) {
-                    for (const [, record] of Object.entries(updated)) {
-                        editor.store.put([(record as any).to])
+                    // 'updated' is a map of ID -> [prev, next]
+                    for (const [, [_, to]] of Object.entries(updated)) {
+                        editor.store.put([to])
                     }
                 }
+                
                 if (removed) {
                     for (const id of Object.keys(removed)) {
-                        editor.store.remove([id as any])
+                         // tldraw IDs are typed, so we cast to specific ID type if strict
+                        editor.store.remove([id as TLRecord['id']])
                     }
                 }
             })
@@ -82,8 +86,6 @@ export default function CollaborativeBoard({
     }
 
     socket.addEventListener('message', handleMessage)
-    
-    // Cleanup listener on unmount
     return () => {
         socket.removeEventListener('message', handleMessage)
     }
@@ -93,7 +95,6 @@ export default function CollaborativeBoard({
     <div className="w-full h-[600px] border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
       <Tldraw 
         onMount={handleMount} 
-        // persistenceKey keeps data in LocalStorage if they refresh
         persistenceKey={`room-${roomId}`} 
       />
     </div>

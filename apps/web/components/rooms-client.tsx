@@ -61,9 +61,10 @@ export default function RoomsClient( {rooms} : {rooms: {
        router.refresh()
 
 
-    } catch (e: any) {
+    } catch (err: unknown) {
+      const e= err as Error
       console.error(e);
-      const msg = e.response?.data?.message || e.message || "Failed to create room";
+      const msg =  e.message || "Failed to create room";
       setError(msg);
     } finally {
       setCreating(false);
