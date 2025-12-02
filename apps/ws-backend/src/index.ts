@@ -5,7 +5,7 @@ import { WebSocketServer } from "ws";
 import type { WebSocket } from "ws";
 
 import { JWT_SECRET } from "@repo/backend-common/config";
-import {prismaClient} from "@repo/db/prismaClient"
+import { prismaClient } from "@repo/db/prismaClient";
 import cookie from "cookie";
 
 
