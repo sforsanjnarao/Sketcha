@@ -67,7 +67,7 @@ export default function CollaborativeBoard({
                 
                 if (updated) {
                     // 'updated' is a map of ID -> [prev, next]
-                    for (const [, [_, to]] of Object.entries(updated)) {
+                    for (const [, [ to]] of Object.entries(updated)) {
                         editor.store.put([to])
                     }
                 }

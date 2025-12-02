@@ -16,7 +16,8 @@ const ChatRoomClient = ({message, id}:{
         if(socket && !loading){
             socket.send(JSON.stringify({
                 type:'join_room',
-                roomId:Number(id)
+                roomId:Number(id),
+                chats  //just to deploy
             }))
          socket.onmessage=(event)=>{
             const parsedData=JSON.parse(event.data)
