@@ -27,7 +27,7 @@ const ChatRoomClient = ({message, id}:{
          }
         }
 
-    },[socket, loading, id])
+    },[socket, loading, id,chats])
 
   return (
    <div>
