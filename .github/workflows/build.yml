@@ -12,6 +12,9 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -42,7 +45,4 @@ jobs:
 
       - name: Build
         run: pnpm build
-        env:
-          # Dummy URL to satisfy Prisma validation.
-          # Since we are using Neon, we don't want to connect to Prod during CI.
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
+       
