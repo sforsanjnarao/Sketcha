@@ -10,7 +10,7 @@ const ChatRoomClient = ({message, id}:{
 
     const [chats, setChats]=useState(message)
     const {socket, loading}=useSocket()
-    // const [currentMessage, setCurrentMessage]=useState('')
+    const [currentMessage, setCurrentMessage]=useState('')
 
     useEffect(()=>{
         if(socket && !loading){
@@ -30,14 +30,14 @@ const ChatRoomClient = ({message, id}:{
     },[socket, loading, id,chats])
 
   return (
-   <div>
+   <div className=''>
         <div>
             <h2 className="text-xl font-bold mb-2">Whiteboard</h2>
             {/* We pass the socket to the board so it can talk to the server */}
             <CollaborativeBoard socket={socket} roomId={id} />
 
         </div>
-         {/* <div>
+         <div>
             {chats.map((m,index)=> <div key={index}>{m.message}</div>)}
 
 
@@ -51,7 +51,7 @@ const ChatRoomClient = ({message, id}:{
                 setCurrentMessage('')
             }
             }>send message</button>
-        </div> */}
+        </div>
    </div>
   )
 }

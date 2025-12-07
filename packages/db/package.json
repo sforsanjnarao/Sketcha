@@ -4,6 +4,7 @@
   "description": "",
   "exports": {
     "./prismaClient": {
+      "types":"./dist/src/index.d.ts",
       "default": "./dist/src/index.js"
     }
   },
