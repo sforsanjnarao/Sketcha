@@ -5,7 +5,7 @@ import { WebSocketServer } from "ws";
 import type { WebSocket } from "ws";
 
 import { JWT_SECRET } from "@repo/backend-common/config";
-import { prismaClient } from "@repo/db/prismaClient";
+import { prisma } from "@repo/db2";
 import cookie from "cookie";
 
 
@@ -114,7 +114,7 @@ wss.on('connection',async (ws, request)=>{
             const message= parsedData.message
 
             //TODO: push it to the queue
-            const createChat=await prismaClient.chat.create({
+            const createChat=await prisma.chat.create({
                 data:{
                     message,
                     user:{

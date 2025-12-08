@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import { signinSchema, signupSchema } from "@repo/common/zodTypes";
-import { prismaClient } from "@repo/db/prismaClient";
+import { prisma } from "@repo/db2";
 
 export const signupController = async (req: Request, res: Response) => {
   try {
@@ -15,7 +15,7 @@ export const signupController = async (req: Request, res: Response) => {
 
     const { name, email, password } = parsed.data;
 
-    const existingUser = await prismaClient.user.findUnique({
+    const existingUser = await prisma.user.findUnique({
       where: { email },
     });
 
@@ -25,7 +25,7 @@ export const signupController = async (req: Request, res: Response) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const user = await prismaClient.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         email,
@@ -63,7 +63,7 @@ export const signinController = async (req: Request, res: Response) => {
 
     const { email, password } = parsed.data;
 
-    const user = await prismaClient.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
 

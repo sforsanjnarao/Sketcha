@@ -1,7 +1,7 @@
 import {json, Router } from "express";
 import type {Router as ExpressRouter } from "express";
 import { middleware } from "../middleware";
-import { prismaClient } from "@repo/db/prismaClient";
+import { prisma } from "@repo/db2";
 import { createRoom } from "@repo/common/zodTypes";
 import { Request, Response } from "express";
 
@@ -24,7 +24,7 @@ router.post('/create-room',middleware,
   const {slug}=parsed.data
   console.log("slug:", slug)
   try{
-    const room:roomData= await prismaClient.room.create({
+    const room:roomData= await prisma.room.create({
       data:{
         slug:slug,
         adminId:req.userId as string
@@ -45,7 +45,7 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
     try{
         const {roomId}=req.params
         const roomID=Number(roomId)
-        const message = await prismaClient.chat.findMany({
+        const message = await prisma.chat.findMany({
             where:{
                 roomId:roomID
             },
@@ -66,7 +66,7 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
 //get all rooms
 router.get('/room',middleware, async (req,res)=>{
     try{
-    const allRooms= await prismaClient.room.findMany({
+    const allRooms= await prisma.room.findMany({
         where:{
             adminId: req.userId
         },
@@ -91,7 +91,7 @@ router.get("/room/:slug",middleware, async (req,res)=>{
     try{
         console.log('i got hit by the backend')
         const {slug}=req.params
-        const room = await prismaClient.room.findFirst({
+        const room = await prisma.room.findFirst({
             where:{
                 slug:slug
             }
