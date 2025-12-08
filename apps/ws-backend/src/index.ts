@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type {JwtPayload} from "jsonwebtoken";
-
+import 'dotenv/config';
 import { WebSocketServer } from "ws";
 import type { WebSocket } from "ws";
 

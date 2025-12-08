@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: "postgresql://postgres:password@localhost:5432/mydb"
+      DIRECT_URL: "postgresql://postgres:password@localhost:5432/mydb"
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
       - name: Check out code
@@ -37,7 +40,7 @@ jobs:
         run: pnpm install
 
       - name: Generate Prisma Client
-        run: pnpm --filter @repo/db prisma generate
+        run: pnpm --filter @repo/db2 exec prisma generate
 
       - name: Lint
         run: pnpm lint
