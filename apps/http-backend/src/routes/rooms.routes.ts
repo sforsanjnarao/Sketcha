@@ -13,7 +13,28 @@ interface roomData{
   adminId:string
 }
 
+//get all rooms
+router.get('/room',middleware, async (req,res)=>{
+    try{
+    const allRooms= await prisma.room.findMany({
+        where:{
+            adminId: req.userId
+        },
+        select:{
+            id: true,
+            slug:true,
+            createdAt:true
+        }
+    })
 
+    res.status(200).json({
+        success:true,
+        allRooms
+    })
+    } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+})
 router.post('/create-room',middleware, 
     async (req:Request, res:Response)=>{
   const parsed= createRoom.safeParse(req.body)
@@ -63,28 +84,7 @@ router.get("/chats/:roomId",middleware, async (req,res)=>{
 })
 
 
-//get all rooms
-router.get('/room',middleware, async (req,res)=>{
-    try{
-    const allRooms= await prisma.room.findMany({
-        where:{
-            adminId: req.userId
-        },
-        select:{
-            id: true,
-            slug:true,
-            createdAt:true
-        }
-    })
 
-    res.status(200).json({
-        success:true,
-        allRooms
-    })
-    } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-})
 
 //get room by name
 router.get("/room/:slug",middleware, async (req,res)=>{

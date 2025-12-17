@@ -1,0 +1,23 @@
+FROM node:20-slim
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+WORKDIR /app
+
+COPY pnpm-lock.yaml ./
+RUN pnpm fetch
+
+COPY . .
+RUN pnpm install --offline
+
+RUN cd packages/db2 && npx prisma generate
+
+# Build Next.js
+RUN pnpm turbo build --filter=web...
+RUN cp -r apps/web/public apps/web/.next/standalone/apps/web/public
+RUN cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
+
+EXPOSE 3000
+CMD ["node", "apps/web/.next/standalone/apps/web/server.js"]

@@ -18,6 +18,6 @@ app.use(cookieParser())
 
 app.use('/api/auth',auth)
 app.use('/api',room)
-app.listen(4000,()=>{
-    console.log('running on port 4000')
+app.listen(3001,()=>{
+    console.log('running on port 3001')
 })

@@ -1,0 +1,29 @@
+FROM node:20-slim
+
+# 1. Install pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+WORKDIR /app
+
+# 2. THE OPTIMIZATION: Copy only the lockfile first
+COPY pnpm-lock.yaml ./
+
+# 3. Fetch dependencies into a virtual store (Caches internet downloads!)
+RUN pnpm fetch
+
+# 4. Now copy the rest of the monorepo
+COPY . .
+
+# 5. Install dependencies (offline mode is fast because of step 3)
+RUN pnpm install --offline
+
+# 6. Generate Prisma Client (Required for DB access)
+RUN cd packages/db2 && npx prisma generate
+
+# 7. Build only the http-backend
+RUN pnpm turbo build --filter=http-backend...
+
+EXPOSE 3001
+CMD ["node", "apps/http-backend/dist/index.js"]
