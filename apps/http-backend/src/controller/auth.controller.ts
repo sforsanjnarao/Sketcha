@@ -38,8 +38,8 @@ export const signupController = async (req: Request, res: Response) => {
     });
     res.cookie('sketcha_token',token,{
       httpOnly:true,
-      secure:false,
-      sameSite: "lax",
+      secure:true ,
+      sameSite: "none",
       path: "/",      
     })
     return res.status(201).json({
@@ -82,8 +82,8 @@ export const signinController = async (req: Request, res: Response) => {
 
     res.cookie('sketcha_token',token,{
       httpOnly:true,
-      secure:false,
-      sameSite: "lax", 
+      secure:true,
+      sameSite: "none", 
       path: "/",     
     })
     console.log('COOKIE', res.cookie)
