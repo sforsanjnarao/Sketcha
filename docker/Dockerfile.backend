@@ -1,29 +1,41 @@
+# this thing is happening in build time
 FROM node:20-slim
 
-# 1. Install pnpm
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack prepare pnpm@10.26.1 --activate
+RUN corepack enable 
+
+## Why use corepack instead of npm install -g pnpm?
+
+# We use corepack because it ensures the pnpm version matches our
+# packageManager field in package.json. This gives consistent,
+# reproducible builds and avoids global dependency drift.
 
 WORKDIR /app
 
-# 2. THE OPTIMIZATION: Copy only the lockfile first
 COPY pnpm-lock.yaml ./
 
-# 3. Fetch dependencies into a virtual store (Caches internet downloads!)
-RUN pnpm fetch
+# RUN pnpm fetch
 
-# 4. Now copy the rest of the monorepo
 COPY . .
 
-# 5. Install dependencies (offline mode is fast because of step 3)
-RUN pnpm install --offline
+# RUN pnpm install --offline
+RUN pnpm install
 
-# 6. Generate Prisma Client (Required for DB access)
-RUN cd packages/db2 && npx prisma generate
 
-# 7. Build only the http-backend
-RUN pnpm turbo build --filter=http-backend...
+# If your schema says url = env("DATABASE_URL"), Prisma validates that this variable exists.
+# which is not but still is a same as prisma 7 introduce prisma.config.ts
+# If that file imports dotenv and tries to load DATABASE_URL, the build will crash if the variable is missing—not because it tries to connect, 
+# but because the code validation fails
+
+ENV DATABASE_URL='postgresql://dummy:5432/db2'
+ENV DIRECT_URL="postgresql://dummy:5432/db2"
+RUN pnpm run generate:db
+RUN npm install -g turbo
+
+RUN pnpm exec turbo build --filter=http-backend...
 
 EXPOSE 3001
-CMD ["node", "apps/http-backend/dist/index.js"]
+CMD ["pnpm","run","start:backend"]

@@ -1,6 +1,6 @@
 'use server'
 import RoomsClient from '../../components/rooms-client';
-import { BACKEND_SERVER_URL } from '../../config';
+import { getBaseUrl } from '../../config';
 
 import { cookies } from "next/headers";
 
@@ -11,9 +11,9 @@ async function getAllRooms() {
     const cookieHeader = tokenCookie 
       ? `sketcha_token=${tokenCookie.value}` 
       : "";
-    console.log(`${BACKEND_SERVER_URL}/api/room`);
+    console.log(`${getBaseUrl()}/api/room`);
 
-    const res = await fetch(`${BACKEND_SERVER_URL}/api/room`, {
+    const res = await fetch(`${getBaseUrl()}/api/room`, {
       method: 'GET',
       headers: {
         Cookie: cookieHeader,

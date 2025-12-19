@@ -8,8 +8,6 @@
     "build": "tsc -b",
     "start": "node -r dotenv/config ./dist/index.js"
   },
-
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -21,6 +19,7 @@
     "@types/cookie": "^1.0.0"
   },
   "dependencies": {
+    "@types/dotenv": "^8.2.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/ws": "^8.18.1",
     "cookie": "^1.1.1",

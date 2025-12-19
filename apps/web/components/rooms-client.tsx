@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiBurst from './ConfettiBurst';
 // import DoodleBorder from './DoodleBorder'; // Uncomment if you use this
-import { BACKEND_URL } from '../config';
+import {  getBaseUrl } from '../config';
 import axios from 'axios';
 
 
@@ -45,7 +45,7 @@ export default function RoomsClient( {rooms} : {rooms: {
 
     try {
       const res = await axios.post(
-        `${BACKEND_URL}/api/create-room`,
+        `${getBaseUrl()}/api/create-room`,
         { slug }, 
         { withCredentials: true }
       );

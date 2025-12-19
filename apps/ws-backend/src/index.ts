@@ -47,7 +47,7 @@ wss.on('connection',async (ws, request)=>{
     //     }
     //     const parsedUrl = new URL(request.url!, "http://localhost");
     //     const token = parsedUrl.searchParams.get("token");
-    const cookieHeader= request.headers.cookie
+    const cookieHeader= request.headers?.cookie
     if(cookieHeader==undefined){
         console.log('headers cookie from request is undefined')
         console.log('headers cookie from request is undefined')

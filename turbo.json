@@ -5,6 +5,10 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "INTERNAL_API_URL",
+        "INTERNAL_API_WS_URL"
+      ],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [ "dist/**",".next/**", "!.next/cache/**"]
     },

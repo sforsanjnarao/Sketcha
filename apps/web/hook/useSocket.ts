@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { WS_URL } from "../config";
+import { getWsUrl } from "../config";
 //this just opening a websocket connect and returning ws object and loading if it set up or not
 
 
 export const WS_URI = (() => {
-  const url = WS_URL;
+  const url = getWsUrl();
   if (!url) throw new Error("WS_URL is missing");
   return url;
 })();

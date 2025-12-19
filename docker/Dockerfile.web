@@ -2,20 +2,29 @@ FROM node:20-slim
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack prepare pnpm@10.26.1 --activate
+
 RUN corepack enable
 
 WORKDIR /app
 
 COPY pnpm-lock.yaml ./
-RUN pnpm fetch
+# RUN pnpm fetch
 
 COPY . .
-RUN pnpm install --offline
+# RUN pnpm install --offline
+RUN pnpm install
+RUN pnpm run generate:db
+RUN pwd
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_API_WS_URL
 
-RUN cd packages/db2 && npx prisma generate
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_WS_URL=$NEXT_PUBLIC_API_WS_URL
 
-# Build Next.js
-RUN pnpm turbo build --filter=web...
+RUN npm install -g turbo
+
+RUN pnpm exec turbo build --filter=web...
 RUN cp -r apps/web/public apps/web/.next/standalone/apps/web/public
 RUN cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
 

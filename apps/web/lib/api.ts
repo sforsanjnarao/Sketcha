@@ -1,9 +1,9 @@
 import axios from "axios";
-import {BACKEND_URL} from '../config'
+import { getBaseUrl} from '../config'
 
 export async function signup({ name, email, password }: { name: string; email: string; password: string }) {
-    console.log(`${BACKEND_URL}`)
-const res= await axios.post(`${BACKEND_URL}/api/auth/signup`,
+    console.log(`${getBaseUrl()}`)
+const res= await axios.post(`${getBaseUrl()}/api/auth/signup`,
     {name, email, password},
     {withCredentials: true}
 )
@@ -13,8 +13,8 @@ return json
 
 
 export async function signin({ email, password }: { email: string; password: string }) {
-    console.log(`${BACKEND_URL}`)
-const res= await axios.post(`${BACKEND_URL}/api/auth/signin`,
+    console.log(`${getBaseUrl()}`)
+const res= await axios.post(`${getBaseUrl()}/api/auth/signin`,
     { email, password},
      {withCredentials: true}
 )

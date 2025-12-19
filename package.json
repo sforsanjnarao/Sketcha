@@ -7,9 +7,9 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "generate:db":"cd ./packages/db2 && pnpm dlx prisma generate",
-    "start:backend": "cd ./apps/http-backend && pnpm run start",
-    "start:ws": "cd ./app/ws-backend && pnpm run start"
+    "generate:db":"cd ./packages/db2  && pnpm dlx prisma generate && cd ../..",
+    "start:backend": "node ./apps/http-backend/dist/index.js",
+    "start:ws": "node ./apps/ws-backend/dist/index.js"
     
   },
   "devDependencies": {
@@ -22,5 +22,6 @@
     "node": ">=18"
   },
   "dependencies": {
+    "turbo": "^2.6.1"
   }
 }
