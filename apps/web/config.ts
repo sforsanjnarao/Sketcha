@@ -6,20 +6,16 @@
 
 export const getBaseUrl = () => {
   if (typeof window === "undefined") {
-    // We are on the Server! Use the Docker internal name.
     return process.env.INTERNAL_API_URL;
   } else {
-    // We are in the Browser! Use the public name.
     return process.env.NEXT_PUBLIC_API_URL;
   }
 };
 
 export const getWsUrl = () => {
   if (typeof window === "undefined") {
-    // We are on the Server! Use the Docker internal name.
     return process.env.INTERNAL_API_WS_URL;
   } else {
-    // We are in the Browser! Use the public name.
     return process.env.NEXT_PUBLIC_API_WS_URL;
   }
 };
