@@ -14,8 +14,11 @@ COPY pnpm-lock.yaml ./
 COPY . .
 # RUN pnpm install --offline
 RUN pnpm install
+
+ENV DATABASE_URL='postgresql://dummy:5432/db2'
+ENV DIRECT_URL="postgresql://dummy:5432/db2"
 RUN pnpm run generate:db
-RUN pwd
+
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_API_WS_URL
 
