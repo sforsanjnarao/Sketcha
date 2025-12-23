@@ -41,6 +41,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.web  #build the image
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001
+        NEXT_PUBLIC_API_WS_URL: http://localhost:8080
     image: sketcha-web
     ports:
       - "3000:3000"
@@ -48,7 +51,7 @@ services:
       - INTERNAL_API_URL=http://http_backend:3001
       - NEXT_PUBLIC_API_URL=http://localhost:3001
       - INTERNAL_API_WS_URL=http://ws_backend:8080
-      - NEXT_PUBLIC_API_WS_URL=http://ws_backend:8080
+      - NEXT_PUBLIC_API_WS_URL=http://localhost:8080
     depends_on:
       - http_backend
       - ws_backend
