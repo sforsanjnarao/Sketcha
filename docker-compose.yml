@@ -29,8 +29,8 @@ services:
       # - DATABASE_URL=${DATABASE_URL}
       # - DIRECT_URL=${DIRECT_URL}
       # - JWT_SECRET=${JWT_SECRET}
-      - DATABASE_URL=postgresql://neondb_owner:npg_yM4kxI3dhQCw@ep-icy-mouse-a14aoi8l-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-      - DIRECT_URL=postgresql://neondb_owner:npg_yM4kxI3dhQCw@ep-icy-mouse-a14aoi8l.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      - DATABASE_URL="postgresql://neondb_owner:npg_yM4kxI3dhQCw@ep-icy-mouse-a14aoi8l-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+      - DIRECT_URL="postgresql://neondb_owner:npg_yM4kxI3dhQCw@ep-icy-mouse-a14aoi8l.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
       - JWT_SECRET=123123
     depends_on:
       - http_backend

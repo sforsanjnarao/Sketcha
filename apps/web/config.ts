@@ -5,17 +5,17 @@
 
 
 export const getBaseUrl = () => {
-  // if (typeof window === "undefined") {
-  //   return process.env.INTERNAL_API_URL;
-  // } else {
+  if (typeof window === "undefined") {
+    return process.env.INTERNAL_API_URL;
+  } else {
     return process.env.NEXT_PUBLIC_API_URL;
-  // }
+  }
 };
 
 export const getWsUrl = () => {
-  // if (typeof window === "undefined") {
-  //   return process.env.INTERNAL_API_WS_URL;
-  // } else {
+  if (typeof window === "undefined") {
+    return process.env.INTERNAL_API_WS_URL;
+  } else {
     return process.env.NEXT_PUBLIC_API_WS_URL;
-  // }
+  }
 };
