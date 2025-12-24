@@ -4,7 +4,7 @@ import { getWsUrl } from "../config";
 
 
 export const WS_URI = (() => {
-  const url = getWsUrl();
+  const url = `${getWsUrl()}/ws`;
   if (!url) throw new Error("WS_URL is missing");
   return url;
 })();

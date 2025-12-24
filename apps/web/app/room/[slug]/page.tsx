@@ -15,7 +15,7 @@ try{
     const token= cookieStore.get('sketcha_token')?.value
     console.log('slug token:', token)
     
-    const response= await axios.get(`${getBaseUrl()}/api/room/${slug}`,
+    const response= await axios.get(`${getBaseUrl()}/api/v1/room/${slug}`,
         {
             headers:{
                 Cookie:`sketcha_token=${token}`
@@ -37,7 +37,7 @@ async function getChats(roomId:string) {
     console.log('chat token:', token)
     // const token= localStorage.getItem('sketcha_token')
 //    const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNDY0NzJkNi0yZjZmLTQ4ZWMtOTkzNC0wMDAzOWZiMzI2NWQiLCJpYXQiOjE3NjQyNTE0MzksImV4cCI6MTc2NDMzNzgzOX0.NqeoY91mvW7w_PGBtpfwUdToihsWT5vwzV791FzT1g8'
-    const response= await axios.get(`${getBaseUrl()}/api/chats/${roomId}`,
+    const response= await axios.get(`${getBaseUrl()}/api/v1/chats/${roomId}`,
         {
              headers:{
                 Cookie:`sketcha_token=${token}`

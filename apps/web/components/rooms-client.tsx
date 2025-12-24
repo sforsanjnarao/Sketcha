@@ -45,7 +45,7 @@ export default function RoomsClient( {rooms} : {rooms: {
 
     try {
       const res = await axios.post(
-        `${getBaseUrl()}/api/create-room`,
+        `${getBaseUrl()}/api/v1/create-room`,
         { slug }, 
         { withCredentials: true }
       );

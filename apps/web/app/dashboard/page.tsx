@@ -11,9 +11,9 @@ async function getAllRooms() {
     const cookieHeader = tokenCookie 
       ? `sketcha_token=${tokenCookie.value}` 
       : "";
-    console.log(`${getBaseUrl()}/api/room`);
+    console.log(`${getBaseUrl()}/api/v1/room`);
 
-    const res = await fetch(`${getBaseUrl()}/api/room`, {
+    const res = await fetch(`${getBaseUrl()}/api/v1/room`, {
       method: 'GET',
       headers: {
         Cookie: cookieHeader,

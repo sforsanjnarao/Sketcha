@@ -3,7 +3,7 @@ import { getBaseUrl} from '../config'
 
 export async function signup({ name, email, password }: { name: string; email: string; password: string }) {
     console.log(`${getBaseUrl()}`)
-const res= await axios.post(`${getBaseUrl()}/api/auth/signup`,
+const res= await axios.post(`${getBaseUrl()}/api/v1/auth/signup`,
     {name, email, password},
     {withCredentials: true}
 )
@@ -14,7 +14,7 @@ return json
 
 export async function signin({ email, password }: { email: string; password: string }) {
     console.log(`${getBaseUrl()}`)
-const res= await axios.post(`${getBaseUrl()}/api/auth/signin`,
+const res= await axios.post(`${getBaseUrl()}/api/v1/auth/signin`,
     { email, password},
      {withCredentials: true}
 )

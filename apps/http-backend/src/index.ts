@@ -16,8 +16,8 @@ app.use(cors({origin:'http://localhost:3000',
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api/auth',auth)
-app.use('/api',room)
+app.use('/v1/auth',auth)
+app.use('/v1',room)
 app.listen(3001,()=>{
     console.log('running on port 3001')
 })
