@@ -11,7 +11,9 @@
     "Excalidraw",
     "heroui",
     "jsonwebtoken",
+    "neondb",
     "nextjs",
+    "pooler",
     "Sketcha"
   ],
   "css.lint.unknownAtRules": "ignore"
